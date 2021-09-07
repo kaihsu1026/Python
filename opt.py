@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QIcon, QGuiApplication
-from PyQt5.QtWidgets import QApplication,  QWidget ,  QTextEdit, QVBoxLayout, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow,  QWidget ,  QTextEdit, QVBoxLayout, QPushButton
 import sys  
 import pyotp
 
@@ -10,7 +10,7 @@ class TextEditDemo(QWidget):
 		self.setWindowTitle("OPT")
 		self.resize(250, 100)    
 
-		self.textEdit = QTextEdit( )      
+		self.textEdit = QTextEdit()      
 		self.btnPress1 = QPushButton("CU")  
 		self.btnPress2 = QPushButton("AMG")  
 
@@ -26,14 +26,14 @@ class TextEditDemo(QWidget):
 		self.totp1 = pyotp.TOTP('C762DBMMURUHERSV')
 		self.totp2 = pyotp.TOTP('VTIYUASYIJ2R4JWM')
     	
-		self.clipboard = QGuiApplication.clipboard()  #複製剪貼簿
+		self.clipboard = QApplication.clipboard()  #複製剪貼簿
 
 	def btnPress1_Clicked(self):
-		self.textEdit.setText(self.totp1.now())
+		self.textEdit.setText(f"<font color='green' size='10' face='DFKai-sb'> <b>{self.totp1.now()} </b></font>")
 		self.clipboard.setText(self.totp1.now())      #複製文字
-
+		
 	def btnPress2_Clicked(self):
-		self.textEdit.setPlainText(self.totp2.now())
+		self.textEdit.setText(f"<font color='green' size='10' face='DFKai-sb'><b>{self.totp2.now()}</b></font>")
 		self.clipboard.setText(self.totp2.now())
 
 
