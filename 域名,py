@@ -1,0 +1,48 @@
+import dns.resolver
+import requests
+from bs4 import BeautifulSoup
+import re
+
+
+def ips(pid): 
+	domain = pid + ('gc.cnamedns.net')
+	ips = []
+	zabbixPid = requests.get('http://zabbix.rv88.tw/fw_vip_all.html')
+	soup = BeautifulSoup(zabbixPid.text, "html.parser")
+	titles = str(soup.find_all("td"))
+	ip = re.sub("[td,</td>,\"]","", titles)
+	for i in ip.split():
+		ips.append(i)
+   
+	
+	#A紀錄方法查詢, 指定查詢紀錄為A
+	A = dns.resolver.resolve(domain, 'A')
+	#查詢回應訊息
+	for i in A.response.answer:
+		#print(i)
+		for j in i.items:
+			wanip = str(j)
+	
+	if wanip in ips:
+		count = ips.index(wanip) +1
+		lanip = ips[count]
+
+		return {wanip : lanip}
+
+if __name__ == '__main__':
+	c = ips('A01')
+	for key, value in c.items():
+		print(f"Wan_ip: {key}\nLan_ip: {value}" )
+		
+
+
+
+
+
+
+
+	
+#socket.gethostbyname(host)  這個也能pidgc.cnamedns.net 解析出來
+
+
+
